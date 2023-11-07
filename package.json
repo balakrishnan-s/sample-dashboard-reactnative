@@ -22,6 +22,7 @@
     "react-native-reanimated": "^3.6.0-nightly-20231105-c56d44fd9",
     "react-native-safe-area-context": "^4.7.4",
     "react-native-screens": "^3.27.0",
+    "react-native-splash-screen": "^3.3.0",
     "react-native-vector-icons": "^10.0.1",
     "react-navigation": "^4.4.4",
     "react-navigation-drawer": "^2.7.2"
