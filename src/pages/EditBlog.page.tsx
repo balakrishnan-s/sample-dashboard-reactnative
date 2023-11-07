@@ -3,12 +3,13 @@ import React, { useState} from 'react';
 import { Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import LoadingIndicator from '../components/LoadingIndicator';
+import LoadingIndicator from '../components/Loader';
 import { RootStackParamList } from '../../App';
 
-import { styles } from './EditBlog.style'
+import { styles } from './EditBlog.style';
+import { serverURL } from '../const/confg';
 
-type NavigationProps = NativeStackScreenProps<RootStackParamList, 'EditBlog'>;
+type NavigationProps = NativeStackScreenProps<RootStackParamList, 'EditBlog'>; 
 
 const EditBlog = ({ route, navigation }: NavigationProps) => {
 
@@ -16,10 +17,6 @@ const EditBlog = ({ route, navigation }: NavigationProps) => {
   const [title, setTitle] = useState(data.title);
   const [body, setBody] = useState(data.body);
   const [isLoading, setIsLoading] = useState(false);
-
-  
-  console.log(data);
-  
 
   const titleChangeHandler = (text: string )=> {
       setTitle(text);
@@ -38,15 +35,15 @@ const EditBlog = ({ route, navigation }: NavigationProps) => {
       'body': body ? body : data.body
     };
     
-    const response = await axios.put(`https://jsonplaceholder.typicode.com/posts/${data.userId}`, 
+    const response = await axios.put(serverURL+`/posts/${data.userId}`, 
           JSON.stringify(payload),
           { headers: {'Content-Type': 'application/json'} });
       
           setIsLoading(false);
       if (response.status == 200) {
-          Alert.alert('Alert Message', 'Post updated successfully', [
+          Alert.alert('Message', 'Blog post updated.', [
               {
-                  text: 'OK',
+                  text: 'Done',
                   onPress: () => {
                       navigation.navigate('Blogs', {"userId": data.userId});
                   },
@@ -57,7 +54,7 @@ const EditBlog = ({ route, navigation }: NavigationProps) => {
     
   return (
     <View style={styles.container}>
-      <LoadingIndicator loading={isLoading}/>
+      <LoadingIndicator loading={isLoading} animationType={undefined} indicatorColor={''} loadingText={''}/>
         <View style={styles.section}>
             <Text style={styles.title}>Title</Text>
             <TextInput 

@@ -5,13 +5,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import axios from 'axios';
 
-import Home from './src/pages/Home';
+import Home from './src/pages/Home.page';
 import Blogs from './src/pages/Blogs.page';
-import CustomDrawer from './src/components/CustomDrawer';
+import CustomDrawer from './src/components/Drawer';
 import EditBlog from './src/pages/EditBlog.page';
 import { User } from './src/model/User';
 
-type Blog = {
+export type RootStackParamList = {
+  Root: RootDrawerParamList;
+  EditBlog: { data: Blog };
+  Blogs: { userId: number };
+};
+
+export type Blog = {
   id: number;
   userId: number;
   title: string;
@@ -24,12 +30,7 @@ export type RootDrawerParamList = {
   EditBlog: { data: Blog };
 };
 
-export type RootStackParamList = {
-  Root: RootDrawerParamList;
-  EditBlog: { data: Blog };
-  Blogs: { userId: number };
-};
-
+import { serverURL } from './src/const/confg';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 
@@ -38,7 +39,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     const getuser = async () => {
-      const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${Math.floor(Math.random() * 10)}`);
+      const response = await axios.get(serverURL+ `/users/${Math.floor(Math.random() * 2)}`);
       setUser(new User(response.data.id, response.data.name))
     }
     getuser();
@@ -46,7 +47,7 @@ function App(): JSX.Element {
   }, []);
 
   const DrawerNavigator = () => (
-    <Drawer.Navigator drawerContent={(props) => <CustomDrawer {...props} user={user} />}>
+    <Drawer.Navigator drawerContent={(props: any) => <CustomDrawer {...props} user={user} />}>
       <Drawer.Screen name='Blogs' component={Blogs} initialParams={{ 'userId': user ? user.id : 1 }} />
       <Drawer.Screen name='Home' component={Home} />
     </Drawer.Navigator>

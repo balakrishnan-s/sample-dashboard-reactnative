@@ -13,8 +13,7 @@ export const styles = StyleSheet.create({
     section: {
       marginBottom: 20
     },
-    input: {
-      borderColor: '#gray',
+    input: { 
       borderWidth: 1,
       paddingHorizontal: 3,
       paddingVertical: 5

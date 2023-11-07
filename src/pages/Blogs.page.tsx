@@ -6,12 +6,13 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootDrawerParamList } from '../../App'
 import { Blog } from '../model/Blog';
 
-import Card from '../components/Card';
+import Card from '../components/CardItems';
 import Footer from '../components/Footer';
 
 import { styles } from './Blogs.style';
 
 type NavigationProps = NativeStackScreenProps<RootDrawerParamList, 'Blogs'>;
+import { serverURL } from '../const/confg';
 
 const Blogs = ({ route, navigation }: NavigationProps) => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -20,7 +21,7 @@ const Blogs = ({ route, navigation }: NavigationProps) => {
   useEffect(() => {
     const getBlogs = async () => {
       const response = await axios.get(
-        `https://jsonplaceholder.typicode.com/users/${userId ? userId : 1}/posts`,
+        serverURL+`/users/${userId ? userId : 1}/posts`,
       );
       const blogs: Blog[] = [];
       for (const obj of response.data) {
@@ -45,7 +46,7 @@ const Blogs = ({ route, navigation }: NavigationProps) => {
       <View style={styles.cardContainer}>
         <View style={styles.imageView}>
           <Image
-            source={require('../images/dummy.jpeg')}
+            source={require('../images/thumbnail.png')}
             style={styles.dummyImage}
           />
         </View>
@@ -54,7 +55,7 @@ const Blogs = ({ route, navigation }: NavigationProps) => {
           <Text style={styles.body}>{body}</Text>
         </View>
       </View>
-      <View style={{ justifyContent: 'flex-end', flexGrow: 1 }}>
+      <View style={styles.footerContainer}>
         <Footer submitTitle='Edit' cancelTitle='Delete' onCancel={onDelete} onSubmit={() => onSubmit(index)} />
       </View>
     </Card>
